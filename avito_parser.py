@@ -20,7 +20,7 @@ class AvitoParser:
     def parse(self):
         while self.status_code == 200:
             print(f'page # {self.avito_page}, status code {self.status_code}')
-            response = requests.get(self.url, headers={'User-Agent': self.USER_AGENT}, proxies={'p': self.avito_page})
+            response = requests.get(self.url, headers={'User-Agent': self.USER_AGENT}, params={'p': self.avito_page})
             soup = BeautifulSoup(response.text, 'lxml')
             body = soup.html.body
             ads = body.find_all('a', attrs={'class': 'item-description-title-link'})
