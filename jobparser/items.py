@@ -15,3 +15,10 @@ class JobparserItem(scrapy.Item):
     salary = scrapy.Field()
     employer_name = scrapy.Field()
     vacancy_link = scrapy.Field()
+
+class InstagramItem(scrapy.Item):
+    # define the fields for your item here like:
+    _id = scrapy.Field()
+    commented_users = scrapy.Field()
+    post_shortcode = scrapy.Field()
+

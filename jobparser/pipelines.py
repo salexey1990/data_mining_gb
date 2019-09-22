@@ -16,8 +16,19 @@ class JobparserPipeline(object):
         self.sql_db = VacancyDB('sqlite:///vacancy.sqlite')
 
     def process_item(self, item, spider):
+        if (spider.name == 'instagram'):
+            return self.process_instagram_item(item, spider)
+        else:
+            return self.process_job_spider(item, spider)
+
+    def process_instagram_item(self, item, spider):
         collection = self.mongo_base[spider.name]
         collection.insert_one(item)
-        db_item = Vacancy(name=item.get('name'), spider=spider.name, salary=item.get('salary'), employer_name=item.get('employer_name'), vacancy_link=item.get('vacancy_link'))
+
+    def process_job_spider(self, item, spider):
+        collection = self.mongo_base[spider.name]
+        collection.insert_one(item)
+        db_item = Vacancy(name=item.get('name'), spider=spider.name, salary=item.get('salary'),
+                          employer_name=item.get('employer_name'), vacancy_link=item.get('vacancy_link'))
         self.sql_db.add_salary(db_item)
         return item
