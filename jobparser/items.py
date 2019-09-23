@@ -19,6 +19,8 @@ class JobparserItem(scrapy.Item):
 class InstagramItem(scrapy.Item):
     # define the fields for your item here like:
     _id = scrapy.Field()
+    user = scrapy.Field()
     commented_users = scrapy.Field()
-    post_shortcode = scrapy.Field()
+    shortcode = scrapy.Field()
+    liked_users = scrapy.Field()
 
