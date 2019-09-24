@@ -8,6 +8,7 @@ from jobparser import settings
 from jobparser.spiders.hhru import HhruSpider
 from jobparser.spiders.superjobru import SuperjobruSpider
 from jobparser.spiders.instagram import InstagramSpider
+from jobparser.spiders.avito import AvitoSpider
 
 do_env = join(dirname(__file__), '.env')
 load_dotenv(do_env)
@@ -21,5 +22,6 @@ if __name__ == '__main__':
     process = CrawlerProcess(settings=crawler_settings)
     # process.crawl(SuperjobruSpider)
     # process.crawl(HhruSpider)
-    process.crawl(InstagramSpider, ['geekbrains.ru'], INST_LOGIN, INST_PWD)
+    # process.crawl(InstagramSpider, ['geekbrains.ru'], INST_LOGIN, INST_PWD)
+    process.crawl(AvitoSpider)
     process.start()
