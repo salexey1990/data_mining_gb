@@ -6,6 +6,33 @@
 # https://docs.scrapy.org/en/latest/topics/items.html
 
 import scrapy
+import re
+from scrapy.loader.processors import MapCompose, TakeFirst, Compose
+
+
+def cleaner_photo(values):
+    if values[:2] == '//':
+        return f'http:{values}'
+    return values
+
+def props_cleaner(prop):
+    key = re.search('(?<=label">)(.*)(?=:)', prop).group(0)
+    val = re.search('(?<=</span>)(.*)(?=</li>)', prop).group(0)
+    return {key: val}
+
+def concat_props(prop):
+    res = {}
+    for item in prop:
+        res.update(item)
+    return res
+
+class AvitoRealEstate(scrapy.Item):
+    _id = scrapy.Field()
+    title = scrapy.Field(output_processor=TakeFirst())
+    photos = scrapy.Field(input_processor=MapCompose(cleaner_photo))
+    props = scrapy.Field(input_processor=MapCompose(props_cleaner), output_processor=Compose(concat_props))
+    price = scrapy.Field(input_processor=Compose(lambda v: int(v[0])), output_processor=TakeFirst())
+    currency = scrapy.Field(output_processor=TakeFirst())
 
 
 class JobparserItem(scrapy.Item):
@@ -29,4 +56,5 @@ class InstagramItem(scrapy.Item):
     commented_users = scrapy.Field()
     shortcode = scrapy.Field()
     liked_users = scrapy.Field()
+
 

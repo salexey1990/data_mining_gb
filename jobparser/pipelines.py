@@ -4,9 +4,11 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
+import scrapy
 from pymongo import MongoClient
 from database.base import VacancyDB
 from database.models import Vacancy
+from scrapy.pipelines.images import ImagesPipeline
 
 
 class JobparserPipeline(object):
@@ -31,4 +33,18 @@ class JobparserPipeline(object):
         db_item = Vacancy(name=item.get('name'), spider=spider.name, salary=item.get('salary'),
                           employer_name=item.get('employer_name'), vacancy_link=item.get('vacancy_link'))
         self.sql_db.add_salary(db_item)
+        return item
+
+class AvitoPhotosPipelines(ImagesPipeline):
+    def get_media_requests(self, item, info):
+        if item['photos']:
+            for img in item['photos']:
+                try:
+                    yield scrapy.Request(img)
+                except TypeError:
+                    pass
+
+    def item_completed(self, results, item, info):
+        if results:
+            item['photos'] = [itm[1] for itm in results if itm[0]]
         return item
