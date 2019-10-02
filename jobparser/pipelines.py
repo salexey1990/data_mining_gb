@@ -37,7 +37,7 @@ class JobparserPipeline(object):
 
 class AvitoPhotosPipelines(ImagesPipeline):
     def get_media_requests(self, item, info):
-        if item['photos']:
+        if item.get('photos'):
             for img in item['photos']:
                 try:
                     yield scrapy.Request(img)

@@ -10,12 +10,16 @@ from jobparser.spiders.superjobru import SuperjobruSpider
 from jobparser.spiders.instagram import InstagramSpider
 from jobparser.spiders.avito import AvitoSpider
 from jobparser.spiders.avitoRealEstate import AvitoRealEstateSpider
+from jobparser.spiders.facebook import FacebookSpider
 
 do_env = join(dirname(__file__), '.env')
 load_dotenv(do_env)
 
 INST_LOGIN = os.getenv('INST_LOGIN')
 INST_PWD = os.getenv('INST_PASSWORD')
+
+FACEBOOK_LOGIN = os.getenv('FACEBOOK_LOGIN')
+FACEBOOK_PASSWORD = os.getenv('FACEBOOK_PASSWORD')
 
 if __name__ == '__main__':
     crawler_settings = Settings()
@@ -24,5 +28,5 @@ if __name__ == '__main__':
     # process.crawl(SuperjobruSpider)
     # process.crawl(HhruSpider)
     # process.crawl(InstagramSpider, ['geekbrains.ru'], INST_LOGIN, INST_PWD)
-    process.crawl(AvitoRealEstateSpider)
+    process.crawl(FacebookSpider, FACEBOOK_LOGIN, FACEBOOK_PASSWORD, 'https://www.facebook.com/lavrentyevas')
     process.start()

@@ -34,6 +34,11 @@ class AvitoRealEstate(scrapy.Item):
     price = scrapy.Field(input_processor=Compose(lambda v: int(v[0])), output_processor=TakeFirst())
     currency = scrapy.Field(output_processor=TakeFirst())
 
+class SocialNetworkItem(scrapy.Item):
+    _id = scrapy.Field()
+    dob = scrapy.Field(output_processor=TakeFirst())
+    name = scrapy.Field(output_processor=TakeFirst())
+    friends = scrapy.Field()
 
 class JobparserItem(scrapy.Item):
     # define the fields for your item here like:
